@@ -1,0 +1,95 @@
+{
+  "name": "markdown-suji",
+  "displayName": "Markdown 速记",
+  "description": "选中关键词，AI 查询解释并一键插入笔记",
+  "version": "0.0.1",
+  "publisher": "zhiming",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "markdownSuji.query",
+        "title": "Markdown 速记：查询解释"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "markdownSuji.query",
+        "key": "ctrl+shift+q",
+        "mac": "cmd+shift+q",
+        "when": "editorHasSelection && resourceLangId == markdown"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorHasSelection && resourceLangId == markdown",
+          "command": "markdownSuji.query",
+          "group": "1_modification"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "markdownSuji",
+          "title": "Markdown 速记",
+          "icon": "$(book)"
+        }
+      ]
+    },
+    "views": {
+      "markdownSuji": [
+        {
+          "type": "webview",
+          "id": "markdownSuji.sidebar",
+          "name": "AI 查询"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Markdown 速记",
+      "properties": {
+        "markdownSuji.endpoint": {
+          "type": "string",
+          "default": "https://api.openai.com/v1",
+          "description": "OpenAI 兼容 API 地址"
+        },
+        "markdownSuji.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key"
+        },
+        "markdownSuji.model": {
+          "type": "string",
+          "default": "gpt-4o-mini",
+          "description": "模型名称"
+        },
+        "markdownSuji.systemPrompt": {
+          "type": "string",
+          "default": "你是一个知识助手。用户会输入一个词或短语，请给出清晰的定义和解释。使用 Markdown 格式回复，包含标题、段落和要点。",
+          "description": "系统提示词"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "compile": "node esbuild.js"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.0"
+  }
+}
